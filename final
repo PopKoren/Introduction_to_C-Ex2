@@ -29,6 +29,10 @@ int moveDuplicatesV1(int*, int);
 int moveDuplicatesV2(int*, int);
 int validateArray(int*, int);
 void quick_sort(int* x, int first, int last);
+void swap(int* v, int* u);
+int split(int* a, int left, int right);
+
+
 
 /* ------------------------------- */
 
@@ -193,34 +197,6 @@ int findCommonDigit(unsigned long long n1, unsigned long long n2) {
 int moveDuplicatesV1(int* arr, int n) {
 	int* temp = (int*)malloc(sizeof(int) * n);
 	assert(temp);
-	int i, j = 0, k = n - 1;
-	for (i = 0; i < n; i++) {
-		int l;
-		for (l = 0; l < i; l++) {
-			if (arr[i] == arr[l]) {
-				break;
-			}
-		}
-		if (l == i) {
-			temp[j] = arr[i];
-			j++;
-		}
-		else {
-			temp[k] = arr[i];
-			k--;
-		}
-	}
-	for (i = 0; i < n; i++) {
-		arr[i] = temp[i];
-	}
-	free(temp);
-	return j;
-
-}
-
-int moveDuplicatesV2(int* arr, int n) {
-	int* temp = (int*)malloc(sizeof(int) * n);
-	assert(temp);
 	quick_sort(arr, 0, n - 1);
 	int i, j = 0, k = n - 1;
 	for (i = 0; i < n; i++) {
@@ -240,6 +216,28 @@ int moveDuplicatesV2(int* arr, int n) {
 	return j;
 }
 
+int moveDuplicatesV2(int* arr, int n) {
+	int* temp = (int*)malloc(sizeof(int) * n);
+	int i, j = 0, k = n - 1;
+	for (i = n - 1; i >= 0; i--) {
+		if (i == n - 1 || arr[i] != arr[i + 1]) {
+			temp[j] = arr[i];
+			j++;
+		}
+		else {
+			temp[k] = arr[i];
+			k--;
+		}
+	}
+	quick_sort(temp + k + 1, 0, j - k - 1);
+	for (i = 0; i < n; i++) {
+		arr[i] = temp[i];
+	}
+	free(temp);
+	return j;
+}
+
+
 void quick_sort(int* x, int first, int last) {
 	int pos;
 	if (first < last) {
@@ -248,6 +246,30 @@ void quick_sort(int* x, int first, int last) {
 		quick_sort(x, pos + 1, last);
 	}
 }
+
+int split(int* a, int left, int right)
+{
+	int i, last = left;
+	if (left < right)
+	{
+		for (i = left + 1; i <= right; i++)
+			if (a[i] <= a[left])
+				swap(a + (++last), a + i);
+		swap(a + left, a + last);
+	}
+	return last;
+}
+
+void swap(int* v, int* u)
+{
+	int temp;
+	temp = *v;
+	*v = *u;
+	*u = temp;
+}
+
+
+
 
 int validateArray(int* arr, int n) {
 	for (int i = 0; i < n; i++)
@@ -270,6 +292,7 @@ int validateArray(int* arr, int n) {
 			return 0;
 		}
 	}
+
 
 	return 1;
 
