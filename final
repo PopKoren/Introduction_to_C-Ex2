@@ -1,3 +1,4 @@
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #define N 4
 
@@ -305,3 +306,4 @@ int validateArray(int* arr, int n) {
 }
 
 /* ------------------- */
+```
