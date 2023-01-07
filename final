@@ -31,8 +31,6 @@ int validateArray(int*, int);
 void quick_sort(int* x, int first, int last);
 void swap(int* v, int* u);
 int split(int* a, int left, int right);
-int binary_search(int* arr, int start, int end, int target);
-
 
 /* ------------------------------- */
 
@@ -278,21 +276,6 @@ void swap(int* v, int* u)
 	*u = temp;
 }
 
-int binary_search(int* arr, int start, int end, int target) {
-	while (start <= end) {
-		int mid = start + (end - start) / 2;
-		if (arr[mid] == target) {
-			return mid;
-		}
-		else if (arr[mid] < target) {
-			start = mid + 1;
-		}
-		else {
-			end = mid - 1;
-		}
-	}
-	return -1;
-}
 
 int validateArray(int* arr, int n) {
 	for (int i = 0; i < n; i++)
