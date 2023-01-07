@@ -194,7 +194,7 @@ int findCommonDigit(unsigned long long n1, unsigned long long n2) {
 }
 
 int moveDuplicatesV1(int* arr, int n) {
-		int* temp = (int*)malloc(sizeof(int) * n);
+	int* temp = (int*)malloc(sizeof(int) * n);
 	assert(temp);
 	int i, j = 0, k = n - 1;
 	for (i = 0; i < n; i++) {
