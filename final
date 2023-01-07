@@ -31,7 +31,7 @@ int validateArray(int*, int);
 void quick_sort(int* x, int first, int last);
 void swap(int* v, int* u);
 int split(int* a, int left, int right);
-
+int binary_search(int* arr, int start, int end, int target);
 
 
 /* ------------------------------- */
@@ -217,24 +217,34 @@ int moveDuplicatesV1(int* arr, int n) {
 }
 
 int moveDuplicatesV2(int* arr, int n) {
-	int* temp = (int*)malloc(sizeof(int) * n);
-	int i, j = 0, k = n - 1;
-	for (i = 0; i < n; i++) {
-		if (i == 0 || arr[i] != arr[i - 1]) {
-			temp[j] = arr[i];
-			j++;
+	int* copy = malloc(n * sizeof(int));
+	for (int i = 0; i < n; i++) {
+		copy[i] = arr[i];
+	}
+
+	// Sort the copy of the array.
+	quick_sort(copy, 0, n - 1);
+
+	// Iterate through the sorted copy and the original array,
+	// swapping duplicate numbers to the right side of the array.
+	int originalIndex = 0;
+	int copyIndex = 0;
+	while (originalIndex < n && copyIndex < n) {
+		if (arr[originalIndex] == copy[copyIndex]) {
+			swap(&arr[originalIndex], &arr[n - 1]);
+			n--;
 		}
 		else {
-			temp[k] = arr[i];
-			k--;
+			originalIndex++;
 		}
+		copyIndex++;
 	}
-	quick_sort(temp + j, 0, k - j);
-	for (i = 0; i < n; i++) {
-		arr[i] = temp[i];
-	}
-	free(temp);
-	return j;
+
+	// Free the copy of the array.
+	free(copy);
+
+	// Return the size of the array without any duplicated numbers.
+	return n;
 }
 
 
@@ -266,6 +276,22 @@ void swap(int* v, int* u)
 	temp = *v;
 	*v = *u;
 	*u = temp;
+}
+
+int binary_search(int* arr, int start, int end, int target) {
+	while (start <= end) {
+		int mid = start + (end - start) / 2;
+		if (arr[mid] == target) {
+			return mid;
+		}
+		else if (arr[mid] < target) {
+			start = mid + 1;
+		}
+		else {
+			end = mid - 1;
+		}
+	}
+	return -1;
 }
 
 int validateArray(int* arr, int n) {
